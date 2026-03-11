@@ -13,7 +13,10 @@
 
 #### 后端
 - **框架**: Node.js + NestJS
-- **数据库**: PostgreSQL + Redis + Qdrant
+- **数据库**:
+  - MVP: MongoDB
+  - v1.0: MongoDB + Redis
+  - v2.0: MongoDB + Redis + Qdrant
 - **插件架构**: 远程插件 + 本地插件混合
 
 #### 移动端
@@ -137,10 +140,11 @@
 1. ✅ 产品定位：AI Agent平台
 2. ✅ 前端技术栈：Vue 3 + WASM
 3. ✅ 后端技术栈：NestJS
-4. ✅ 移动端技术栈：Flutter + Kotlin
-5. ✅ 插件架构：远程+本地混合
-6. ✅ 动态扩展：小程序+热更新（移动端）
-7. ✅ MVP范围：对话+日程+LLM适配
+4. ✅ 数据库：MongoDB（MVP）→ +Redis（v1.0）→ +Qdrant（v2.0）
+5. ✅ 移动端技术栈：Flutter + Kotlin
+6. ✅ 插件架构：远程+本地混合
+7. ✅ 动态扩展：小程序+热更新（移动端）
+8. ✅ MVP范围：对话+日程+LLM适配
 
 ### 待决策的问题
 1. ⏸️ Agent引擎：LangGraph vs 自研

@@ -51,27 +51,35 @@
 │  Agent编排    │  LLM适配层    │  个性化引擎   │  插件系统    │
 └──────────────┴──────────────┴──────────────┴──────────────┘
                             ↓
-┌──────────────┬──────────────┬──────────────┬──────────────┐
-│  PostgreSQL  │  Redis       │  Qdrant      │  对象存储    │
-└──────────────┴──────────────┴──────────────┴──────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  MVP: MongoDB                                                │
+│  v1.0: MongoDB + Redis                                       │
+│  v2.0: MongoDB + Redis + Qdrant                              │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ## 🛠️ 技术栈
 
 ### 后端
 - **框架**: NestJS (Node.js + TypeScript)
-- **数据库**: PostgreSQL + Redis + Qdrant
-- **消息队列**: BullMQ
+- **数据库**:
+  - MVP: MongoDB + Mongoose
+  - v1.0: MongoDB + Redis
+  - v2.0: MongoDB + Redis + Qdrant
+- **消息队列**: BullMQ (v1.0+)
 - **WebSocket**: Socket.io
 
 ### 前端
-- **框架**: React + Vite
-- **样式**: TailwindCSS
-- **状态管理**: Zustand
-- **工作流编辑**: React Flow
+- **框架**: Vue 3 + Vite
+- **UI库**: Naive UI / Element Plus
+- **状态管理**: Pinia
+- **工作流编辑**: Vue Flow
+- **密集计算**: Kotlin -> WASM
 
 ### 移动端
-- **框架**: React Native
+- **框架**: Flutter + Dart
+- **Android原生**: Kotlin + Compose
+- **动态扩展**: 小程序 + 热更新
 
 ### 部署
 - **容器化**: Docker
@@ -112,8 +120,7 @@ assistant-platform/
 
 ### 环境要求
 - Node.js >= 18
-- PostgreSQL >= 14
-- Redis >= 6
+- MongoDB >= 6
 - Docker (可选)
 
 ### 安装依赖
@@ -121,9 +128,22 @@ assistant-platform/
 npm install
 ```
 
+### 配置环境变量
+```bash
+cp .env.example .env
+# 编辑 .env 文件，配置数据库连接等
+```
+
 ### 启动开发环境
 ```bash
-npm run dev
+# 启动 MongoDB (使用 Docker)
+docker-compose up -d mongodb
+
+# 启动后端
+npm run start:dev
+
+# 启动前端
+cd web && npm run dev
 ```
 
 ### 运行测试

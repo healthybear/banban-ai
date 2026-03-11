@@ -7,13 +7,13 @@
 ## [Unreleased]
 
 ### Added
-- 项目进度管理方案
-- TODO.md 任务清单
-- PROGRESS.md 进度记录
-- CHANGELOG.md 变更日志
+- 文档管理skill（doc-manager）
+- 数据库分阶段方案文档
 
 ### Changed
-- 无
+- 统一项目文档，以 docs/ 为准
+- 更新技术栈：后端改回NestJS
+- 数据库方案：MongoDB（分阶段引入Redis和Qdrant）
 
 ### Deprecated
 - 无
@@ -22,7 +22,7 @@
 - 无
 
 ### Fixed
-- 无
+- 修复文档不一致问题（README vs docs/）
 
 ### Security
 - 无
@@ -53,9 +53,12 @@
 ### Decisions
 - **技术栈确定**:
   - 前端: Vue 3 + Vite + Naive UI
-  - 后端: Express + TypeScript + Prisma
+  - 后端: NestJS + TypeScript
   - 移动端: Flutter + Kotlin Compose
-  - 数据库: PostgreSQL + Redis + Qdrant
+  - 数据库: MongoDB（分阶段）
+    - MVP: MongoDB
+    - v1.0: MongoDB + Redis
+    - v2.0: MongoDB + Redis + Qdrant
   - Agent: LangChain.js
 - **开发模式**: 单人开发，业余时间
 - **成本策略**: 使用免费开源工具
@@ -67,14 +70,14 @@
 - **时间规划**: 6个月完成MVP
 
 ### Changed
-- 后端框架从NestJS改为Express（学习成本低）
 - 前端框架从React改为Vue 3（更熟悉）
 - 团队模式从多人改为单人开发
+- 数据库从PostgreSQL改为MongoDB（更灵活）
 
 ### Removed
-- 移除了NestJS相关规划
 - 移除了React相关规划
 - 移除了多人团队的复杂流程
+- 移除了PostgreSQL + Prisma方案
 
 ---
 

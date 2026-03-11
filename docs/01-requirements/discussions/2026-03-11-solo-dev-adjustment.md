@@ -1,6 +1,6 @@
 ---
 title: 团队与技术栈调整
-version: 1.2
+version: 1.3
 author: 项目负责人
 created: 2026-03-11
 updated: 2026-03-11
@@ -23,7 +23,7 @@ tags: [团队, 技术栈, 调整]
 - **当前团队**: 1人（全栈开发）
 - **技能栈**:
   - 前端: Vue（熟悉）
-  - 后端: Express（有基础，小功能经验）
+  - 后端: 有基础经验
   - 移动端: Flutter、Kotlin、Compose（熟悉）
   - 其他: WASM、Kotlin编译
 
@@ -34,42 +34,45 @@ tags: [团队, 技术栈, 调整]
 
 ---
 
-## 技术栈重新调整
+## 技术栈最终确定
 
-### 1. 后端技术栈调整
+### 1. 后端技术栈
 
-#### 原方案
-❌ NestJS - 学习成本高，对一个人来说太重
-
-#### 新方案
-✅ **Express + TypeScript**
+✅ **NestJS + TypeScript**
 
 **理由**:
-1. **你已经有经验** - 用过Express，上手快
-2. **轻量级** - 不需要学习复杂的依赖注入
-3. **生态成熟** - 中间件丰富
-4. **够用** - MVP阶段完全够用
+1. **架构清晰** - 模块化设计，适合长期维护
+2. **TypeScript原生支持** - 类型安全，开发体验好
+3. **依赖注入** - 代码解耦，易于测试
+4. **生态完善** - 集成了最佳实践
+5. **适合扩展** - 后期功能增加时架构稳定
 
 **技术栈**:
 ```
 后端核心:
-- Express (Web框架)
+- NestJS (Web框架)
 - TypeScript (类型安全)
-- ts-node-dev (开发热重载)
+- ts-node (开发热重载)
 
-数据库:
-- PostgreSQL (免费开源，可商用)
-- Redis (免费开源，可商用)
-- Qdrant (免费开源，可商用)
+数据库（分阶段）:
+MVP阶段:
+- MongoDB (文档数据库，灵活快速)
+- Mongoose (ODM，类型安全)
 
-ORM:
-- Prisma (免费，类型安全，易用)
+v1.0阶段:
+- MongoDB (持久化数据)
+- Redis (缓存 + 任务队列)
+
+v2.0阶段:
+- MongoDB (核心数据)
+- Redis (缓存 + 队列)
+- Qdrant (向量数据库，RAG + 语义搜索)
 
 认证:
 - Passport.js (免费)
 - JWT (免费)
 
-任务队列:
+任务队列（v1.0+）:
 - Bull (基于Redis，免费)
 
 WebSocket:
@@ -137,14 +140,35 @@ Android原生:
 
 ---
 
-### 4. 数据库选型（全部免费可商用）
+### 4. 数据库选型（分阶段部署）
 
-✅ **PostgreSQL + Redis + Qdrant**
+#### MVP阶段：只用 MongoDB
+✅ **MongoDB**
 
 **理由**:
-- 全部开源免费
-- 可商用
-- 功能强大
+- Schema灵活，适合快速迭代
+- 存储JSON格式天然适合对话记录
+- 开发速度快，不用设计复杂表结构
+- 免费额度充足
+
+**部署方案**:
+```
+开发环境:
+- Docker 本地运行
+- 或 MongoDB Compass 本地安装
+
+生产环境:
+- MongoDB Atlas (免费512MB)
+- 或自建服务器
+```
+
+#### v1.0阶段：MongoDB + Redis
+✅ **MongoDB + Redis**
+
+**新增 Redis 理由**:
+- 用户量增加，需要缓存
+- 任务队列（插件系统、异步任务）
+- 性能优化需求
 
 **部署方案**:
 ```
@@ -152,12 +176,29 @@ Android原生:
 - Docker Compose 本地运行
 
 生产环境:
-- 自建服务器（最便宜）
-  或
-- 云服务免费套餐:
-  - Supabase (PostgreSQL免费500MB)
-  - Upstash (Redis免费10K命令/天)
-  - Qdrant Cloud (免费1GB)
+- MongoDB Atlas (免费512MB)
+- Upstash Redis (免费10K命令/天)
+- 或自建服务器
+```
+
+#### v2.0阶段：MongoDB + Redis + Qdrant
+✅ **MongoDB + Redis + Qdrant**
+
+**新增 Qdrant 理由**:
+- 个性化引擎需要向量搜索
+- RAG（检索增强生成）
+- 长期记忆语义搜索
+
+**部署方案**:
+```
+开发环境:
+- Docker Compose 本地运行
+
+生产环境:
+- MongoDB Atlas (免费512MB)
+- Upstash Redis (免费10K命令/天)
+- Qdrant Cloud (免费1GB)
+- 或自建服务器（推荐）
 ```
 
 ---
@@ -224,6 +265,7 @@ const executor = new AgentExecutor({
 - 文档完善
 - 支持多种LLM
 - 内置很多工具
+- 与NestJS集成良好
 
 ##### 选项2: 自己简单实现
 ```typescript
@@ -304,8 +346,8 @@ class SimpleAgent {
 ### 时间规划：6个月（业余时间）
 
 #### Month 1-2: 后端基础
-- [ ] Express + TypeScript项目搭建
-- [ ] PostgreSQL + Prisma集成
+- [ ] NestJS + TypeScript项目搭建
+- [ ] MongoDB + Mongoose集成
 - [ ] 用户认证（Passport + JWT）
 - [ ] LLM适配层（Claude + DeepSeek）
 - [ ] 基础对话API
@@ -340,17 +382,18 @@ class SimpleAgent {
 └─────────────────────────────────────┘
               ↓ HTTP/WebSocket
 ┌─────────────────────────────────────┐
-│      Express + TypeScript            │
+│      NestJS + TypeScript             │
 │  ┌──────────┬──────────┬──────────┐ │
 │  │ LLM适配  │ Agent    │ 日程管理  │ │
 │  │ 层       │ 系统     │          │ │
 │  └──────────┴──────────┴──────────┘ │
 └─────────────────────────────────────┘
               ↓
-┌──────────┬──────────┬──────────────┐
-│PostgreSQL│  Redis   │   Qdrant     │
-│(Prisma)  │  (Bull)  │  (向量DB)    │
-└──────────┴──────────┴──────────────┘
+┌─────────────────────────────────────┐
+│  MVP: MongoDB (Mongoose)             │
+│  v1.0: + Redis (Bull)                │
+│  v2.0: + Qdrant (向量DB)             │
+└─────────────────────────────────────┘
 ```
 
 ---
@@ -369,9 +412,7 @@ class SimpleAgent {
 ```
 - 前端: Vercel (免费)
 - 后端: Railway (免费$5/月)
-- 数据库: Supabase (免费500MB)
-- Redis: Upstash (免费10K命令/天)
-- 向量DB: Qdrant Cloud (免费1GB)
+- 数据库: MongoDB Atlas (免费512MB)
 - 监控: Sentry (免费5K错误/月)
 
 总成本: $0/月
@@ -391,7 +432,7 @@ class SimpleAgent {
 ```
 - 前端: Vercel (免费)
 - 后端: 自建VPS (¥50/月)
-- 数据库: 自建在VPS上
+- 数据库: MongoDB Atlas (免费512MB)
 
 总成本: ¥50/月 (约$7/月)
 ```
@@ -450,17 +491,17 @@ Kimi:
 ## 技术学习路径
 
 ### 需要学习的（优先级排序）
-1. **Express进阶** (1周)
-   - 中间件机制
-   - 错误处理
-   - 路由组织
-   - TypeScript集成
+1. **NestJS基础** (1-2周)
+   - 模块、控制器、服务
+   - 依赖注入
+   - 中间件和守卫
+   - TypeScript装饰器
 
-2. **Prisma ORM** (3天)
+2. **MongoDB + Mongoose** (3-5天)
    - Schema定义
-   - 迁移管理
    - CRUD操作
    - 关系查询
+   - 索引优化
 
 3. **LangChain.js** (1周)
    - 基础概念
@@ -474,9 +515,9 @@ Kimi:
    - 房间管理
 
 ### 可以边做边学
-- Bull队列
-- Redis操作
-- Qdrant使用
+- Bull队列（v1.0再学）
+- Redis操作（v1.0再学）
+- Qdrant使用（v2.0再学）
 - 部署运维
 
 ---
@@ -506,11 +547,11 @@ Kimi:
 | 层级 | 技术选型 | 理由 | 成本 |
 |------|----------|------|------|
 | 前端 | Vue 3 + Vite | 你熟悉 | 免费 |
-| 后端 | Express + TS | 你有基础 | 免费 |
-| 数据库 | PostgreSQL | 免费开源 | 免费 |
-| 缓存 | Redis | 免费开源 | 免费 |
-| 向量DB | Qdrant | 免费开源 | 免费 |
-| ORM | Prisma | 免费，易用 | 免费 |
+| 后端 | NestJS + TS | 架构清晰，易扩展 | 免费 |
+| 数据库(MVP) | MongoDB | 灵活快速 | 免费 |
+| 数据库(v1.0) | MongoDB + Redis | 缓存+队列 | 免费 |
+| 数据库(v2.0) | + Qdrant | 向量搜索 | 免费 |
+| ODM | Mongoose | 免费，易用 | 免费 |
 | Agent | LangChain.js | 免费开源 | 免费 |
 | 移动端 | Flutter | 你熟悉 | 免费 |
 | 部署 | Vercel+Railway | 免费套餐 | 免费 |
@@ -523,9 +564,9 @@ Kimi:
 ## 下一步行动
 
 ### 本周
-- [ ] 学习Express + TypeScript基础
-- [ ] 搭建Express项目骨架
-- [ ] 配置Prisma + PostgreSQL
+- [ ] 学习NestJS基础
+- [ ] 搭建NestJS项目骨架
+- [ ] 配置MongoDB + Mongoose
 - [ ] 实现简单的用户认证
 
 ### 下周

@@ -203,6 +203,13 @@ MVP (v0.1)          v1.0              v2.0              v3.0
   - 离线支持
   - 冲突解决
 
+- [ ] 端侧 AI 智能（后续优化）
+  - TFLite INT8 量化模型
+  - 消息内容分类（代码/列表/普通文本）
+  - 输入行为检测与动态布局
+  - 会话意图预判与资源预加载
+  - 详见：[端侧 AI 智能设计文档](../02-design/detailed-design/mobile-ai/on-device-intelligence.md)
+
 #### 3. 语音交互
 - [ ] 语音输入
   - STT集成（Whisper）

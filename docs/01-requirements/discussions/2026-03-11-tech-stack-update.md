@@ -94,9 +94,10 @@ UI框架:
    - 充分利用Android平台能力
 
 4. **动态扩展方案**
-   - **小程序方式**: 类似微信小程序架构
-   - **热更新**: Flutter支持CodePush式热更新
-   - **不使用WebView + JSBridge**: 体验不好，放弃
+   - **小程序方式**：采用 **UniMP SDK（DCloud）** + uni-app，Flutter 通过 MethodChannel 嵌入真实小程序运行时
+   - **不使用 WebView + JSBridge**：体验不好，放弃
+   - **不使用自研小程序引擎**：维护成本过高，使用 UniMP SDK 代替
+   - 详见：[小程序架构设计](../../02-design/miniapp-architecture.md)
 
 #### 技术栈详情
 ```
@@ -114,8 +115,9 @@ iOS原生:
 - SwiftUI (复杂UI，可选)
 
 动态扩展:
-- 小程序引擎 (自研或基于开源方案)
-- 热更新 (CodePush / 自建)
+- UniMP SDK (DCloud，嵌入 uni-app 小程序运行时)
+- uni-app + Vue 3 (小程序开发框架，编译到微信/支付宝/抖音/H5)
+- MethodChannel + EventChannel (Flutter ↔ 小程序通信)
 ```
 
 ---

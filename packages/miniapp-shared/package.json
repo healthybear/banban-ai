@@ -1,0 +1,6 @@
+{
+  "name": "@banban/miniapp-shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "uni-app 小程序共享代码（多个小程序共用的 composables、utils、components）"
+}
